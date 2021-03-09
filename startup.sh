@@ -36,6 +36,7 @@ else
   echo "startup/vpn: Ignore vpn client."
 fi
 
+# Wolffsohn - setup VPN provider route via local network, otherwise when default route set to ppp0 VPN, the VPN will stop working.
 route add 90.155.53.19 gw 192.168.41.1
 #route add -net 192.168.41.0/24 gw 172.17.0.1
 
