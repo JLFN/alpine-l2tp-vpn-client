@@ -36,6 +36,9 @@ else
   echo "startup/vpn: Ignore vpn client."
 fi
 
+route add 90.155.53.19 gw 172.17.0.1
+route add -net 192.168.41.0/24 gw 172.17.0.1
+
 # Run socks5 server after 10 Seconds if SCOKS5_ENABLE is 1
 if [[ $SCOKS5_ENABLE -eq 1 ]];then
   echo "startup/socks5: waiting for ppp0"
