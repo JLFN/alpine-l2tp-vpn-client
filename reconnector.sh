@@ -26,6 +26,9 @@ while true; do
     # ip route add $VPN_SERVER via $DEAFULT_ROUTE_IP dev eth0
     while read p; do echo "reconnector: Adding $p to route table...";ip route add $p via $DEAFULT_ROUTE_IP dev eth0; done < /tmp/all_ips.txt
 
+# Wolffsohn - remove route to network, as default route is now via ppp0 VPN
+route del default eth0
+
     # Check routes
     route -n
     traceroute 8.8.8.8 -m 1
