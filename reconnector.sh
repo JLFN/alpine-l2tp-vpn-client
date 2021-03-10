@@ -6,7 +6,9 @@ while true; do
     # try to connect vpn if it's not connected
     xl2tpd-control -c /var/run/xl2tpd/l2tp-control connect 'myVPN'
     # Wait for vpn to create ppp0 network interface
-    while ! route | grep ppp0 > /dev/null; do echo "reconnector: waiting for ppp0"; sleep 1; done
+ # Wolffsohn - this loop can never get an answer - nxl2tpd-control reconnect added inside loop
+ sleep 10
+    while ! route | grep ppp0 > /dev/null; do echo "reconnector: dial ppp0 again"; xl2tpd-control -c /var/run/xl2tpd/l2tp-control connect 'myVPN'; sleep 10; done
 
     # Get Default Gateway
     DEAFULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
