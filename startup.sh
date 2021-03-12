@@ -54,4 +54,11 @@ else
   echo "startup/socks5: Ignore socks5 server."
 fi
 
+# Wolffsohn - add router functionality to server https://www.tecmint.com/setup-linux-as-router/
+echo 1 > /proc/sys/net/ipv4/ip_forward    # or /etc/sysctl.conf  and add net.ipv4.ip_forward = 1
+iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+iptables -A FORWARD -i ppp0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eth0 -o eth0 -j ACCEPT
+
+
 exec tail -f /dev/null  ## %%LAST-CMD_2_REPLACE%
