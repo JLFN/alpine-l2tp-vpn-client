@@ -63,4 +63,5 @@ iptables -A FORWARD -i eth0 -o eth0 -j ACCEPT
 # Wolffsohn - start miniupnpd - uses config in /etc/miniupnpd.conf
 miniupnpd
 
+
 exec tail -f /dev/null  ## %%LAST-CMD_2_REPLACE%
