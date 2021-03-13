@@ -63,5 +63,7 @@ iptables -A FORWARD -i eth0 -o ppp0 -j ACCEPT
 # Wolffsohn - start miniupnpd - uses config in /etc/miniupnpd.conf
 miniupnpd
 
+# Wolffsohn -p -l -e -x
+iptables -A FORWARD -d 192.168.41.81 -p tcp -m tcp --dport 22918 -j ACCEPT
 
 exec tail -f /dev/null  ## %%LAST-CMD_2_REPLACE%
