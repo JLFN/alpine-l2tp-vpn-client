@@ -2,6 +2,7 @@
 while true; do
   if ! route | grep  ppp0 > /dev/null; then
     # wait for 5 sec to make sure ppp0 is avalible again in case of diconnection
+    date
     echo "reconnector: wait for 5 secs";sleep 5
     # try to connect vpn if it's not connected
     echo "reconnector: Try to reconnect VPN"
@@ -14,6 +15,7 @@ then echo "reconnector: VPN connection failed - go back to Startup-again script"
 /startup-again.sh; 
 else
     echo "reconnector: VPN connection successful";
+    date
     # Get Default Gateway
     DEAFULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
     # Get VPN Gateway
