@@ -29,7 +29,7 @@ if [[ $VPN_ENABLE -eq 1 ]];then
   (sleep 7 \
     && echo "startup/vpn: send connect command to vpn client." \
     && echo "c myVPN" > /var/run/xl2tpd/l2tp-control) &
-  exec /reconnector.sh &
+ # exec /reconnector.sh &
   echo "startup/vpn: start vpn client daemon."
   exec /usr/sbin/xl2tpd -p /var/run/xl2tpd.pid -c /etc/xl2tpd/xl2tpd.conf -C /var/run/xl2tpd/l2tp-control -D &
 else
@@ -44,15 +44,15 @@ route add 90.155.53.19 gw $DEFAULT_ROUTE_IP
 #route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
 
 # Run socks5 server after 10 Seconds if SCOKS5_ENABLE is 1
-if [[ $SCOKS5_ENABLE -eq 1 ]];then
-  echo "startup/socks5: waiting for ppp0"
-  (while ! route | grep ppp0 > /dev/null; do sleep 1; done \
-    && echo "startup/socks5: Socks5 will start in $SCOKS5_START_DELAY seconds" \
-    && sleep $SCOKS5_START_DELAY \
-    && sockd -N $SCOKS5_FORKS) &
-else
-  echo "startup/socks5: Ignore socks5 server."
-fi
+#if [[ $SCOKS5_ENABLE -eq 1 ]];then
+#  echo "startup/socks5: waiting for ppp0"
+#  (while ! route | grep ppp0 > /dev/null; do sleep 1; done \
+#    && echo "startup/socks5: Socks5 will start in $SCOKS5_START_DELAY seconds" \
+#    && sleep $SCOKS5_START_DELAY \
+#    && sockd -N $SCOKS5_FORKS) &
+#else
+#  echo "startup/socks5: Ignore socks5 server."
+#fi
 
 # Wolffsohn - add router functionality to server https://www.tecmint.com/setup-linux-as-router/
 echo 1 > /proc/sys/net/ipv4/ip_forward    # or /etc/sysctl.conf  and add net.ipv4.ip_forward = 1
