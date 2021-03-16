@@ -67,6 +67,6 @@ sleep 30
 
 # Wolffsohn -p -l -e -x
 iptables -A FORWARD -d 192.168.41.81 -p tcp -m tcp --dport 32400 -j ACCEPT
-route add -net 172.17.0.0/24 gw 192.168.41.81
+#route add -net 172.17.0.0/24 gw 192.168.41.81
 
 exec tail -f /dev/null  ## %%LAST-CMD_2_REPLACE%
