@@ -61,7 +61,7 @@ iptables -A FORWARD -i ppp0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCE
 iptables -A FORWARD -i eth0 -o ppp0 -j ACCEPT
 
 # Wolffsohn - start miniupnpd - uses config in /etc/miniupnpd.conf
-miniupnpd
+#miniupnpd
 sleep 30
 /etc/miniupnpd/iptables_init.sh
 
