@@ -4,12 +4,16 @@ while true; do
     # wait for 5 sec to make sure ppp0 is avalible again in case of diconnection
     echo "reconnector: wait for 5 secs";sleep 5
     # try to connect vpn if it's not connected
+    echo "reconnector: Try to reconnect VPN"
     xl2tpd-control -c /var/run/xl2tpd/l2tp-control connect 'myVPN'
     # Wait for vpn to create ppp0 network interface
- # Wolffsohn - this loop may never get an answer - nxl2tpd-control reconnect added inside loop to fix this.
- sleep 10
- while ! route | grep ppp0 > /dev/null; do echo "reconnector: dial ppp0 again"; xl2tpd-control -c /var/run/xl2tpd/l2tp-control connect 'myVPN'; sleep 10; done
-
+ # Wolffsohn - this loop may never get connected - startup-again.sh reconnect script added inside loop to fix this.
+echo "reconnector: wait 30 secs"; sleep 30
+ if  ! route | grep ppp0 > /dev/null; 
+then echo "reconnector: VPN connection failed - go back to Startup-again script"; 
+/startup-again.sh; 
+else
+    echo "reconnector: VPN connection successful";
     # Get Default Gateway
     DEAFULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
     # Get VPN Gateway
@@ -45,6 +49,7 @@ route del default eth0
     # Show Public IP
     # curl icanhazip.com
     echo "reconnector: Your Public IP: $(curl https://api64.ipify.org -s)"
+fi # Wolffsohn - extra loop
   else
     sleep 10
   fi
