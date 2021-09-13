@@ -7,6 +7,9 @@ on:
   release:
     types: [published]
 
+env:
+  DOCKER_REPOSITORY_NAME: ghostry
+
 jobs:
   push_to_registry:
     runs-on: ubuntu-latest
@@ -19,12 +22,11 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
           repository=${{ github.repository }}
-          actor=${{ github.actor }}
-          IMAGE_NAME=${actor}/${repository##*/}
+          IMAGE_NAME=${{ env.DOCKER_REPOSITORY_NAME }}/${repository##*/}
           echo IMAGE_NAME=$IMAGE_NAME
           echo VERSION=$VERSION
-          echo ::set-output name=VERSION::${VERSION}
-          echo ::set-output name=IMAGE_NAME::${IMAGE_NAME}
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Log in to Docker Hub
@@ -36,4 +38,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ steps.get_env.outputs.IMAGE_NAME }}:${{ steps.get_env.outputs.VERSION }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
