@@ -11,7 +11,7 @@ jobs:
   push_to_registry:
     runs-on: ubuntu-latest
     steps:
-      - name: get_env
+      - name: get_image_name
         run: |
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # Strip "v" prefix from tag name
@@ -21,13 +21,11 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
 
           repository=${{ github.repository }}
-          IMAGE_NAME=${{ github.actor }}/${repository##*/}
+          IMAGE_NAME=${{ github.actor }}/${repository##*/}:$VERSION
 
           echo IMAGE_NAME=$IMAGE_NAME
-          echo VERSION=$VERSION
 
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Log in to Docker Hub
@@ -39,4 +37,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          tags: ${{ env.IMAGE_NAME }}
