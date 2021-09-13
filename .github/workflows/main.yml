@@ -21,7 +21,8 @@ jobs:
           repository=${{ github.repository }}
           actor=${{ github.actor }}
           IMAGE_NAME=${actor}/${repository##*/}
-
+          echo IMAGE_NAME=$IMAGE_NAME
+          echo VERSION=$VERSION
           echo ::set-output name=VERSION::${VERSION}
           echo ::set-output name=IMAGE_NAME::${IMAGE_NAME}
       - name: Check out the repo
