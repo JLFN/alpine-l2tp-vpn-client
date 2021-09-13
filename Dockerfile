@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine
 
 ENV LANG C.UTF-8
 ENV VPN_ENABLE 1
