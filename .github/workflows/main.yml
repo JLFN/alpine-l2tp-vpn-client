@@ -6,7 +6,7 @@ on:
       - master
   release:
     types: [published]
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   push_to_registry:
