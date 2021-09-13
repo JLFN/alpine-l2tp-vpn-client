@@ -20,7 +20,8 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
 
-          IMAGE_NAME=${{ github.actor }}/${${{ github.repository }}##*/}
+          repository=${{ github.repository }}
+          IMAGE_NAME=${{ github.actor }}/${repository##*/}
 
           echo IMAGE_NAME=$IMAGE_NAME
           echo VERSION=$VERSION
