@@ -20,10 +20,10 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
           repository=${{ github.repository }}
           actor=${{ github.actor }}
-          IMAGE_NAME=$actor/${repository##*/}
+          IMAGE_NAME=${actor}/${repository##*/}
 
-          echo "::set-output name=VERSION::$VERSION"
-          echo "::set-output name=IMAGE_NAME::$IMAGE_NAME"
+          echo ::set-output name=VERSION::${VERSION}
+          echo ::set-output name=IMAGE_NAME::${IMAGE_NAME}
       - name: Check out the repo
         uses: actions/checkout@v2
       - name: Log in to Docker Hub
