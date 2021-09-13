@@ -8,12 +8,10 @@ on:
     types: [published]
 
 jobs:
-  main:
+  push_to_registry:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out the repo
-        uses: actions/checkout@v2
-      - name: SetENV
+      - name: get_env
         run: |
           VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
           # Strip "v" prefix from tag name
@@ -21,10 +19,13 @@ jobs:
           # Use Docker `latest` tag convention
           [ "$VERSION" == "master" ] && VERSION=latest
           repository=${{ github.repository }}
-          IMAGE_NAME=${{ github.actor }}/${repository##*/}
+          actor=${{ github.actor }}
+          IMAGE_NAME=$actor/${repository##*/}
 
-          echo "::set-env name=VERSION::$VERSION"
-          echo "::set-env name=IMAGE_NAME::$IMAGE_NAME"
+          echo "::set-output name=VERSION::$VERSION"
+          echo "::set-output name=IMAGE_NAME::$IMAGE_NAME"
+      - name: Check out the repo
+        uses: actions/checkout@v2
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
@@ -34,4 +35,4 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ${{ env.IMAGE_NAME }}:${{ env.VERSION }}
+          tags: ${{ steps.get_env.outputs.IMAGE_NAME }}:${{ steps.get_env.outputs.VERSION }}
