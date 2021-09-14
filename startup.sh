@@ -61,11 +61,6 @@ iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
 iptables -A FORWARD -i ppp0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -i eth0 -o ppp0 -j ACCEPT
 
-# Wolffsohn - start miniupnpd - uses config in /etc/miniupnpd.conf
-# miniupnpd
-# sleep 30
-# /etc/miniupnpd/iptables_init.sh
-
 # Wolffsohn -p -l -e -x
 # iptables -A FORWARD -d 192.168.41.81 -p tcp -m tcp --dport 32400 -j ACCEPT
 #route add -net 172.17.0.0/24 gw 192.168.41.81

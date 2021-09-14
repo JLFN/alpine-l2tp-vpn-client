@@ -15,7 +15,6 @@ RUN set -x && \
               bind-tools \
               ppp \
               dante-server \
-              miniupnpd \
     && rm -rf /tmp/* \
     && mkdir -p /var/run/pluto \
     && mkdir -p /var/run/xl2tpd \
@@ -31,6 +30,5 @@ COPY sockd.conf /etc/sockd.conf
 # Scripts
 COPY startup.sh /
 COPY reconnector.sh /
-COPY miniupnpd.conf /etc/miniupnpd.conf
 
 CMD ["/startup.sh"]
