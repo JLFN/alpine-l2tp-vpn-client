@@ -39,9 +39,10 @@ fi
 # Wolffsohn - setup VPN provider route via local network, otherwise when default route set to ppp0 VPN, the VPN will stop working.
 # Get Default Gateway
     DEFAULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
-route add 90.155.53.19 gw $DEFAULT_ROUTE_IP
+    echo DEFAULT_ROUTE_IP=$DEFAULT_ROUTE_IP
+# route add 90.155.53.19 gw $DEFAULT_ROUTE_IP
 # WOlffsohn - following is only needed if in a BRIDGED docker
-#route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
+route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
 
 # Run socks5 server after 10 Seconds if SCOKS5_ENABLE is 1
 if [[ $SCOKS5_ENABLE -eq 1 ]];then
@@ -66,7 +67,7 @@ sleep 30
 /etc/miniupnpd/iptables_init.sh
 
 # Wolffsohn -p -l -e -x
-iptables -A FORWARD -d 192.168.41.81 -p tcp -m tcp --dport 32400 -j ACCEPT
+# iptables -A FORWARD -d 192.168.41.81 -p tcp -m tcp --dport 32400 -j ACCEPT
 #route add -net 172.17.0.0/24 gw 192.168.41.81
 
 exec tail -f /dev/null  ## %%LAST-CMD_2_REPLACE%
