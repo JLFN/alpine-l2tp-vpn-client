@@ -38,7 +38,7 @@ fi
 
 # Wolffsohn - setup VPN provider route via local network, otherwise when default route set to ppp0 VPN, the VPN will stop working.
 # Get Default Gateway
-    DEFAULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
+DEFAULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
 # route add 90.155.53.19 gw $DEFAULT_ROUTE_IP
 # WOlffsohn - following is only needed if in a BRIDGED docker
 route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
