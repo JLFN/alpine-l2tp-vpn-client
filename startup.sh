@@ -70,6 +70,6 @@ while true; do
       if  ! route | grep ppp0 > /dev/null;then
           echo "startup: VPN connection failed - restart docker";
           exit;
-      else
+      fi
   fi
 done
