@@ -1,6 +1,13 @@
 #!/bin/sh
 echo "successful: VPN connection successful";
 date
+
+# Wolffsohn - add router functionality to server https://www.tecmint.com/setup-linux-as-router/
+echo 1 > /proc/sys/net/ipv4/ip_forward    # or /etc/sysctl.conf  and add net.ipv4.ip_forward = 1
+iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
+iptables -A FORWARD -i ppp0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eth0 -o ppp0 -j ACCEPT
+
 # Get Default Gateway
 DEAFULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
 # Get VPN Gateway

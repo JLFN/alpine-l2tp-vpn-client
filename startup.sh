@@ -1,5 +1,4 @@
 #!/bin/sh
-
 # Run VPN if VPN_ENABLE is 1
 if [[ $VPN_ENABLE -eq 1 ]];then
   echo "startup/vpn: configuring vpn client."
@@ -23,7 +22,6 @@ if [[ $VPN_ENABLE -eq 1 ]];then
   sleep 3
   ipsec --status
   sleep 3
-
 
   # startup xl2tpd ppp daemon then send it a connect command
   (sleep 7 \
@@ -54,23 +52,10 @@ else
   echo "startup/socks5: Ignore socks5 server."
 fi
 
-# Wolffsohn - add router functionality to server https://www.tecmint.com/setup-linux-as-router/
-echo 1 > /proc/sys/net/ipv4/ip_forward    # or /etc/sysctl.conf  and add net.ipv4.ip_forward = 1
-iptables -t nat -A POSTROUTING -o ppp0 -j MASQUERADE
-iptables -A FORWARD -i ppp0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i eth0 -o ppp0 -j ACCEPT
+while ! route | grep ppp0 > /dev/null; do sleep 1; done
+/successful.sh
 
-while true; do
-  sleep 60
-  if ! route | grep  ppp0 > /dev/null; then
-      date
-      echo "startup: wait 30 secs";
-      sleep 30
-      if  ! route | grep ppp0 > /dev/null;then
-        echo "startup: VPN connection failed - restart docker";
-        exit;
-      else
-        /successful.sh
-      fi
-  fi
+while route | grep ppp0 > /dev/null; do
+  sleep 10;
 done
+echo "startup: VPN connection failed - restart docker";
