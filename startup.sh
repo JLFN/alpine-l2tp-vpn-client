@@ -29,7 +29,6 @@ if [[ $VPN_ENABLE -eq 1 ]];then
   (sleep 7 \
     && echo "startup/vpn: send connect command to vpn client." \
     && echo "c myVPN" > /var/run/xl2tpd/l2tp-control) &
-  exec /reconnector.sh &
   echo "startup/vpn: start vpn client daemon."
   exec /usr/sbin/xl2tpd -p /var/run/xl2tpd.pid -c /etc/xl2tpd/xl2tpd.conf -C /var/run/xl2tpd/l2tp-control -D &
 else
@@ -38,8 +37,8 @@ fi
 
 # Wolffsohn - setup VPN provider route via local network, otherwise when default route set to ppp0 VPN, the VPN will stop working.
 # Get Default Gateway
-    DEFAULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
-    echo DEFAULT_ROUTE_IP=$DEFAULT_ROUTE_IP
+DEFAULT_ROUTE_IP=$(route | grep eth0 | grep default | awk '{print $2}')
+echo DEFAULT_ROUTE_IP=$DEFAULT_ROUTE_IP
 # route add 90.155.53.19 gw $DEFAULT_ROUTE_IP
 # WOlffsohn - following is only needed if in a BRIDGED docker
 route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
@@ -68,8 +67,10 @@ while true; do
       echo "startup: wait 30 secs";
       sleep 30
       if  ! route | grep ppp0 > /dev/null;then
-          echo "startup: VPN connection failed - restart docker";
-          exit;
+        echo "startup: VPN connection failed - restart docker";
+        exit;
+      else
+        /successful.sh
       fi
   fi
 done

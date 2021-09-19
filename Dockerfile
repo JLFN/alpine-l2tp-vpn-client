@@ -29,7 +29,7 @@ COPY options.l2tpd.client /etc/ppp/options.l2tpd.client
 COPY sockd.conf /etc/sockd.conf
 # Scripts
 COPY startup.sh /
-COPY reconnector.sh /
+COPY successful.sh /
 #COPY miniupnpd.conf /etc/miniupnpd.conf
 
 CMD ["/startup.sh"]
