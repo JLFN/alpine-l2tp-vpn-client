@@ -46,4 +46,3 @@ traceroute 8.8.8.8 -m 1
 # Show Public IP
 # curl icanhazip.com
 echo "successful: Your Public IP: $(curl https://api64.ipify.org -s)"
-fi # Wolffsohn - extra loop
