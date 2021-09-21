@@ -1,7 +1,13 @@
 #!/bin/sh
+echo "startup: start "$(date)
+echo "startup: wipe the old file";
+rm -f /etc/ipsec.d/*.db
+rm -f /run/pluto/pluto.pid
+rm -f /var/run/xl2tpd.pid
 # Run VPN if VPN_ENABLE is 1
 if [[ $VPN_ENABLE -eq 1 ]];then
-  echo "startup/vpn: configuring vpn client."
+  echo "startup: start vpn "$(date)
+  echo "startup: configuring vpn client."
   # template out all the config files using env vars
   sed -i 's/right=.*/right='$VPN_SERVER'/' /etc/ipsec.conf
   echo ': PSK "'$VPN_PSK'"' > /etc/ipsec.secrets
@@ -29,8 +35,9 @@ if [[ $VPN_ENABLE -eq 1 ]];then
     && echo "c myVPN" > /var/run/xl2tpd/l2tp-control) &
   echo "startup/vpn: start vpn client daemon."
   exec /usr/sbin/xl2tpd -p /var/run/xl2tpd.pid -c /etc/xl2tpd/xl2tpd.conf -C /var/run/xl2tpd/l2tp-control -D &
+
 else
-  echo "startup/vpn: Ignore vpn client."
+  echo "startup/vpn: Ignore vpn client."$(date)
 fi
 
 # Wolffsohn - setup VPN provider route via local network, otherwise when default route set to ppp0 VPN, the VPN will stop working.
@@ -43,13 +50,13 @@ route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
 
 # Run socks5 server after 10 Seconds if SCOKS5_ENABLE is 1
 if [[ $SCOKS5_ENABLE -eq 1 ]];then
-  echo "startup/socks5: waiting for ppp0"
+  echo "startup/socks5: waiting for ppp0 "$(date)
   (while ! route | grep ppp0 > /dev/null; do sleep 1; done \
-    && echo "startup/socks5: Socks5 will start in $SCOKS5_START_DELAY seconds" \
+    && echo "startup/socks5: Socks5 will start in $SCOKS5_START_DELAY seconds "$(date) \
     && sleep $SCOKS5_START_DELAY \
     && sockd -N $SCOKS5_FORKS) &
 else
-  echo "startup/socks5: Ignore socks5 server."
+  echo "startup/socks5: Ignore socks5 server."$(date)
 fi
 
 while ! route | grep ppp0 > /dev/null; do sleep 1; done
@@ -58,8 +65,5 @@ while ! route | grep ppp0 > /dev/null; do sleep 1; done
 while route | grep ppp0 > /dev/null; do
   sleep 10;
 done
-echo "startup: VPN connection failed - wipe the old NSS database";
-rm -f /etc/ipsec.d/*.db
-rm -f /run/pluto/pluto.pid
-rm -f /var/run/xl2tpd.pid
-echo $(date)"startup: restart docker";
+echo "startup: VPN connection failed ";
+echo "startup: restart docker "$(date);
