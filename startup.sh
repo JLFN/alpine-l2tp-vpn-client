@@ -58,4 +58,8 @@ while ! route | grep ppp0 > /dev/null; do sleep 1; done
 while route | grep ppp0 > /dev/null; do
   sleep 10;
 done
-echo "startup: VPN connection failed - restart docker";
+echo "startup: VPN connection failed - wipe the old NSS database";
+rm -f /etc/ipsec.d/*.db
+rm -f /run/pluto/pluto.pid
+rm -f /var/run/xl2tpd.pid
+echo $(date)"startup: restart docker";
