@@ -30,6 +30,5 @@ COPY sockd.conf /etc/sockd.conf
 # Scripts
 COPY startup.sh /
 COPY successful.sh /
-#COPY miniupnpd.conf /etc/miniupnpd.conf
 
 CMD ["/startup.sh"]

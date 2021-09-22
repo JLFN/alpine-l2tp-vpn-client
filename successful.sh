@@ -32,10 +32,6 @@ done < /tmp/all_ips.txt
 # Wolffsohn - remove route to network, as default route is now via ppp0 VPN
 route del default eth0
 
-# Check routes
-route -n
-traceroute 8.8.8.8 -m 1
-
 # Set default gateway to VPN
 route add -net default gw $VPN_ROUTE_IP dev ppp0
 
@@ -46,3 +42,4 @@ traceroute 8.8.8.8 -m 1
 # Show Public IP
 # curl icanhazip.com
 echo "successful: Your Public IP: $(curl https://api64.ipify.org -s)"
+date
