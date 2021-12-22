@@ -59,10 +59,10 @@ else
   echo "startup/socks5: Ignore socks5 server."$(date)
 fi
 
-while ! route | grep ppp0 > /dev/null; do sleep 1; done
+while ! $(route | grep ppp0 > /dev/null); do sleep 1; done
 /successful.sh
 
-while route | grep ppp0 > /dev/null; do
+while $(route | grep ppp0 > /dev/null); do
   sleep 10;
 done
 echo "startup: VPN connection failed ";
