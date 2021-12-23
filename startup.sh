@@ -58,7 +58,7 @@ if [[ $SCOKS5_ENABLE -eq 1 ]];then
 else
   echo "startup/socks5: Ignore socks5 server."$(date)
 fi
-
+# max wait 120s
 for j in $(seq 1 120)
 do
   echo "wait $j"
