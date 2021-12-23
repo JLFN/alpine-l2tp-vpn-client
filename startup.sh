@@ -51,7 +51,7 @@ route add -net $DEFAULT_ROUTE_IP/24 gw $DEFAULT_ROUTE_IP
 # Run socks5 server after 10 Seconds if SCOKS5_ENABLE is 1
 if [[ $SCOKS5_ENABLE -eq 1 ]];then
   echo "startup/socks5: waiting for ppp0 "$(date)
-  (while [[ "$(route | grep ppp0|wc -l)" != "1" ]]; do sleep 1; done \
+  (while [[ "$(route | grep ppp0|wc -l)" = "0" ]]; do sleep 1; done \
     && echo "startup/socks5: Socks5 will start in $SCOKS5_START_DELAY seconds "$(date) \
     && sleep $SCOKS5_START_DELAY \
     && sockd -N $SCOKS5_FORKS) &
@@ -69,10 +69,10 @@ do
     sleep 1;
   fi
 done
-sleep 30;
 route
+sleep 30;
 # Check online every 10 seconds
-while [[ "$(route | grep ppp0|wc -l)" = "1" ]]; do
+while [[ "$(route | grep ppp0|wc -l)" != "0" ]]; do
   sleep 10;
 done
 echo "startup: VPN connection failed ";
