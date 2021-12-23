@@ -59,8 +59,16 @@ else
   echo "startup/socks5: Ignore socks5 server."$(date)
 fi
 
-while ! $(route | grep ppp0 > /dev/null); do sleep 1; done
-/successful.sh
+for j in $(seq 1 120)
+do
+  echo "wait $j"
+  if [[ ! $(route | grep ppp0 > /dev/null) ]]; then
+    sleep 1
+  else
+    /successful.sh
+    break
+  fi
+done
 
 while $(route | grep ppp0 > /dev/null); do
   sleep 10;
