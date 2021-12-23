@@ -62,19 +62,18 @@ fi
 for j in $(seq 1 120)
 do
   echo "wait $j"
-  if [[ ! $(route | grep ppp0 > /dev/null) ]]; then
-    sleep 1
-  else
+  if [[ "$(route | grep ppp0|wc -l)" = "1" ]]; then
     /successful.sh
     break
+  else
+    sleep 1
   fi
 done
-
-while $(route | grep ppp0 > /dev/null); do
+# Check online every 10 seconds
+while [[ "$(route | grep ppp0|wc -l)" = "1" ]]; do
   sleep 10;
 done
 echo "startup: VPN connection failed ";
 echo "startup: restart docker "$(date);
-pkill xl2tpd;
-pkill sockd;
+
 exit
