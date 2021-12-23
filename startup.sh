@@ -67,3 +67,6 @@ while $(route | grep ppp0 > /dev/null); do
 done
 echo "startup: VPN connection failed ";
 echo "startup: restart docker "$(date);
+pkill xl2tpd;
+pkill sockd;
+exit
