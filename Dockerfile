@@ -32,3 +32,5 @@ COPY startup.sh /
 COPY successful.sh /
 
 CMD ["/startup.sh"]
+
+HEALTHCHECK --timeout=5s --interval=30s --start-period=30s --retries=3 CMD /scripts/health
