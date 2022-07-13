@@ -1,0 +1,3 @@
+#!/usr/bin/env zsh
+
+echo $(curl -sI https://www.amazon.se -XGET|grep HTTP| awk '{print $2}')

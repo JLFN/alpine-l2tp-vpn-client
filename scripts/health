@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+
+#IP=$(/scripts/get_ip)
+AMZ_RESP=$(/scripts/amz)
+# BASE_IP=$(cat /base_ip)
+
+
+if [[ "$AMZ_RESP" != "200" ]]; then
+ echo "Amazon response not 200"
+ exit 1
+else
+	echo "Healthy"
+	exit 0
+fi
+
+# if [ "$IP" = "$BASE_IP" ]; then
+  # echo "VPN not working, got ip: $IP"
+  # exit 1
+# elif [ -z "$IP" ]; then
+  # echo "Unable to get ip, base ip: $BASE_IP"
+  # exit 2
+# else
+  # echo "ip: $IP, base ip: $BASE_IP"
+  # exit 0
+# fi
